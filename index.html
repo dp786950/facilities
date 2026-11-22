@@ -110,7 +110,7 @@ const bd=s=>`<span class="bd s-${esc(s).split(' ')[0]}">${esc(s)}</span>`;
 const NAV=()=>[['dash','Dashboard','gauge'],['cal','Calendar','calendar-days'],['rooms','Conference Rooms','door-open'],['bk','Bookings','list']].concat(ADMIN?[['add','Add Booking','plus'],['mt','Maintenance','wrench'],['set','Settings','gear']]:[]);
 function cards(){const n=D.now,t=n.slice(0,10),B=D.bookings;return{
  rooms:{t:'Total Rooms',i:'building',l:D.rooms,k:'r'},
- active:{t:'Active Rooms',i:'circle-check',l:D.rooms.filter(r=>r.status=='Active'),k:'r'},
+active:{t:'Available Now',i:'circle-check',l:D.rooms.filter(r=>r.status=='Active'&&!B.some(b=>b.conference_room_id==r.id&&['Pending','Confirmed'].includes(b.booking_status)&&S(b)<=n&&n<E(b))),k:'r'},
  new:{t:'New Bookings',i:'bell',l:[...B].sort((a,b)=>b.created_at>a.created_at?1:-1).slice(0,10),k:'b'},
  ongoing:{t:'Ongoing Bookings',i:'play',l:B.filter(b=>b.booking_status=='Confirmed'&&S(b)<=n&&n<E(b)),k:'b'},
  today:{t:"Today's Bookings",i:'calendar-day',l:B.filter(b=>b.meeting_date==t&&b.booking_status!='Cancelled'),k:'b'},
